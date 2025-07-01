@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выбор возраста</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a56, #ffcf56, #ffd93d);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #112;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(10px);
+        }
+
+        .title {
+            font-size: 2.2em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #112;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .age-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .age-btn {
+            padding: 15px 20px;
+            border: 3px solid #ff9a56;
+            background: linear-gradient(45deg, #fff, #fffbf0);
+            color: #112;
+            font-size: 1.1em;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .age-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .age-btn:hover::before {
+            left: 100%;
+        }
+
+        .age-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 154, 86, 0.3);
+            background: linear-gradient(45deg, #ff9a56, #ffcf56);
+            color: white;
+        }
+
+        .age-btn.selected {
+            background: linear-gradient(45deg, #ff9a56, #ffcf56);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 154, 86, 0.4);
+        }
+
+        .confirm-btn {
+            padding: 18px 40px;
+            background: linear-gradient(45deg, #ff6b35, #ff9a56);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2em;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .confirm-btn.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .confirm-btn:hover.active {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+            background: linear-gradient(45deg, #ff5722, #ff6b35);
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .message.show {
+            opacity: 1;
+        }
+
+        .message.success {
+            background: linear-gradient(45deg, #4caf50, #66bb6a);
+            color: white;
+        }
+
+        .message.info {
+            background: linear-gradient(45deg, #2196f3, #42a5f5);
+            color: white;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #ff9a56;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .selected-age {
+            margin-top: 20px;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #ff6b35;
+        }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">Выберите ваш возраст</h1>
+    <div class="age-buttons">
+      <button class="age-btn" data-age="7">7 лет</button>
+      <button class="age-btn" data-age="8">8 лет</button>
+      <button class="age-btn" data-age="9">9 лет</button>
+      <button class="age-btn" data-age="10">10 лет</button>
+    </div>
+    <div class="selected-age" id="selectedAge"></div>
+    <button class="confirm-btn" id="confirmBtn">Подтвердить</button>
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Отправка данных...</p>
+    </div>
+    <div class="message" id="message"></div>
+  </div>
+
+<script>
+  let selectedAge = null;
+  const ageButtons = document.querySelectorAll('.age-btn');
+  const confirmBtn = document.getElementById('confirmBtn');
+  const selectedAgeDiv = document.getElementById('selectedAge');
+  const loadingDiv = document.getElementById('loading');
+  const messageDiv = document.getElementById('message');
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/ВАШ_СКРИПТ_ID/exec';
+
+  ageButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      ageButtons.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedAge = btn.dataset.age;
+      selectedAgeDiv.textContent = `Выбранный возраст: ${selectedAge} лет`;
+      confirmBtn.classList.add('active');
+    });
+  });
+
+  confirmBtn.addEventListener('click', async () => {
+    if (!selectedAge) return;
+    loadingDiv.style.display = 'block';
+    messageDiv.classList.remove('show');
+
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ age: selectedAge })
+      });
+
+      // Показываем краткое сообщение (не обязательно)
+      showMessage('success', `Данные отправлены! Сейчас вы будете перенаправлены…`);
+
+      // Даём чуть времени на показ сообщения (500 мс), затем редирект
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 500);
+
+    } catch (err) {
+      showMessage('error', 'Ошибка при отправке, попробуйте ещё раз.');
+      loadingDiv.style.display = 'none';
+    }
+  });
+
+  function showMessage(type, text) {
+    messageDiv.textContent = text;
+    messageDiv.className = `message ${type} show`;
+  }
+</script>
+</body>
+</html>
