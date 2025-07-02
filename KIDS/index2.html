@@ -174,7 +174,7 @@
   <div class="container">
     <h1 class="title">Yoshingizni tanlang</h1>
     <div class="age-buttons">
-      <button class="age-btn" data-age="7">8 yosh</button>
+      <button class="age-btn" data-age="7">7 yosh</button>
       <button class="age-btn" data-age="8">8 yosh</button>
       <button class="age-btn" data-age="9">9 yosh</button>
       <button class="age-btn" data-age="10">10 yosh</button>
@@ -221,7 +221,7 @@
       });
 
       // Показываем краткое сообщение (не обязательно)
-      showMessage('success', `Данные отправлены! Сейчас вы будете перенаправлены…`);
+      showMessage('success', `Ma'lumotlar yuborildi! Endi test sahifasiga o'tasiz!…`);
 
       // Даём чуть времени на показ сообщения (500 мс), затем редирект
       setTimeout(() => {
@@ -229,7 +229,7 @@
       }, 500);
 
     } catch (err) {
-      showMessage('error', 'Ошибка при отправке, попробуйте ещё раз.');
+      showMessage('error', 'Ma`lumotlar bormadi! keyinroq urunib ko`ring!.');
       loadingDiv.style.display = 'none';
     }
   });
