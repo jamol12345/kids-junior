@@ -370,3 +370,143 @@
         <button>Klaviatura</button>
         <button>Quloqchin</button>
       </div>
+      </div>
+      <button class="end" id="end">Yakunlash</button>
+
+<!-- Модальные окна -->
+<div class="result-modal success-modal" id="successModal">
+  <div class="result-content">
+    <div class="result-title">🎉 Tabriklaymiz! 🎉</div>
+    <div class="result-message">Siz testni muvaffaqiyatli yakunladingiz!</div>
+    <div class="result-score" id="successScore"></div>
+    <button class="restart-btn" onclick="closeModal()">Tasdiqlash</button>
+  </div>
+</div>
+
+<div class="result-modal fail-modal" id="failModal">
+  <div class="result-content">
+    <div class="result-title">😔 Afsus...</div>
+    <div class="result-message">Testni yecha olmadingiz,<br>boshqa safar omadingiz keladi!</div>
+    <div class="result-score" id="failScore"></div>
+    <button class="restart-btn" onclick="closeModal()">Tasdiqlash</button>
+  </div>
+</div>
+
+<script>
+  const correctAnswerIndices = new Map([
+    ['savol_1', 1],
+    ['savol_2', 1],
+    ['savol_3', 1],
+    ['savol_4', 2],
+    ['savol_5', 2],
+  ]);
+
+  const userAnswers = new Map();
+
+  function createSound(frequency, duration, type = 'sine') {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+    oscillator.type = type;
+
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + duration);
+  }
+
+  function playCorrectSound() {
+    try {
+      createSound(523.25, 0.2);
+      setTimeout(() => createSound(659.25, 0.2), 100);
+    } catch (e) {
+      console.log('Звук не может быть воспроизведен');
+    }
+  }
+
+  function playIncorrectSound() {
+    try {
+      createSound(220, 0.3, 'triangle');
+    } catch (e) {
+      console.log('Звук не может быть воспроизведен');
+    }
+  }
+
+  function playApplauseSound() {
+    try {
+      const frequencies = [440, 523, 659, 784, 880];
+      frequencies.forEach((freq, index) => {
+        setTimeout(() => {
+          createSound(freq, 0.1, 'square');
+          createSound(freq * 1.5, 0.05, 'triangle');
+        }, index * 100);
+      });
+    } catch (e) {
+      console.log('Звук не может быть воспроизведен');
+    }
+  }
+
+  function playOopsSound() {
+    try {
+      createSound(330, 0.4, 'sine');
+      setTimeout(() => createSound(220, 0.6, 'sine'), 200);
+    } catch (e) {
+      console.log('Звук не может быть воспроизведен');
+    }
+  }
+
+  correctAnswerIndices.forEach((correctIndex, qid) => {
+    const buttons = document.querySelectorAll(`#${qid} button`);
+    buttons.forEach((btn, index) => {
+      btn.addEventListener('click', () => {
+        if (userAnswers.has(qid)) return;
+
+        buttons.forEach(b => b.disabled = true);
+
+        if (index === correctIndex) {
+          btn.classList.add('correct');
+          userAnswers.set(qid, true);
+          playCorrectSound();
+        } else {
+          btn.classList.add('error');
+          userAnswers.set(qid, false);
+          playIncorrectSound();
+        }
+      });
+    });
+  });
+
+  document.getElementById('end').addEventListener('click', () => {
+    let totalCorrect = 0;
+    userAnswers.forEach(val => { if (val === true) totalCorrect++; });
+
+    const scoreText = `To'g'ri javoblar soni: ${totalCorrect} / 5`;
+
+    if (totalCorrect >= 4) {
+      document.getElementById('successScore').textContent = scoreText;
+      document.getElementById('successModal').style.display = 'flex';
+      playApplauseSound();
+    } else {
+      document.getElementById('failScore').textContent = scoreText;
+      document.getElementById('failModal').style.display = 'flex';
+      playOopsSound();
+    }
+  });
+
+  function closeModal() {
+    document.getElementById('successModal').style.display = 'none';
+    document.getElementById('failModal').style.display = 'none';
+  }
+
+  document.querySelectorAll('.result-modal').forEach(modal => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  });
+</script>
