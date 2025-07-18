@@ -43,10 +43,24 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
+    .images-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin: 15px 0;
+    }
+
     .card img {
-      max-width: 100px;
-      margin: 5px;
+      flex: 1;
+      max-width: 100%;
+      height: 400px;
       border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      transition: transform 0.3s ease;
+    }
+
+    .card img:hover {
+      transform: scale(1.05);
     }
 
     .answer_card {
@@ -66,6 +80,7 @@
       color: white;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.2s;
+      min-width: 0;
     }
 
     .answer_card button:hover:not(:disabled) {
@@ -76,18 +91,6 @@
     .answer_card button:disabled {
       cursor: not-allowed;
       opacity: 0.7;
-    }
-
-    #savol_2 button {
-      flex: none;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      padding: 0;
-    }
-
-    #savol_2 button:hover:not(:disabled) {
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
 
     .correct { background-color: #2ecc71 !important; }
@@ -199,21 +202,41 @@
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
-    @media (max-width: 600px) {
+    /* Адаптивность для мобильных устройств */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      .images-container {
+        flex-direction: column;
+        gap: 10px;
+      }
+
       .card img {
-        max-width: 60px;
+        height: 90px;
       }
 
       .answer_card {
-        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
       }
 
-      .card img:nth-child(n+4) {
-        display: none;
+      .answer_card button {
+        padding: 15px;
+        font-size: 1rem;
       }
 
       .result-content {
-        padding: 30px;
+        padding: 30px 20px;
       }
 
       .result-title {
@@ -228,6 +251,47 @@
         font-size: 1.5rem;
       }
     }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      .card {
+        padding: 12px;
+      }
+
+      .card img {
+        height: 80px;
+      }
+
+      .answer_card button {
+        padding: 12px;
+        font-size: 0.9rem;
+      }
+
+      .end {
+        padding: 12px 24px;
+        font-size: 1rem;
+      }
+
+      .result-content {
+        padding: 25px 15px;
+      }
+
+      .result-title {
+        font-size: 1.8rem;
+      }
+
+      .result-message {
+        font-size: 1rem;
+      }
+
+      .result-score {
+        font-size: 1.3rem;
+        padding: 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -235,217 +299,74 @@
   <main>
     <div class="card">
       <h1>1-savol</h1>
-      <div style="display:flex; justify-content: start; align-items: center;"><img src="https://sdmntprwestus3.oaiusercontent.com/files/00000000-5e2c-61fd-b4d2-c90bdf02b384/raw?se=2025-07-15T18%3A52%3A52Z&sp=r&sv=2024-08-04&sr=b&scid=bbc2ad99-9d18-511d-bba9-e49dee3e7273&skoid=04233560-0ad7-493e-8bf0-1347c317d021&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-07-14T21%3A50%3A38Z&ske=2025-07-15T21%3A50%3A38Z&sks=b&skv=2024-08-04&sig=tk/3dT9e6HNBJOlTM11VpN8SLA3HqRsgHjjMxW5eMvU%3D" />
-        <img src="https://sdmntprsouthcentralus.oaiusercontent.com/files/00000000-9db8-61f7-9eec-52d5a34b4b47/raw?se=2025-07-15T18%3A58%3A35Z&sp=r&sv=2024-08-04&sr=b&scid=350e90f2-aa1b-5c17-91f5-9bc4665e3c40&skoid=04233560-0ad7-493e-8bf0-1347c317d021&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-07-15T12%3A47%3A37Z&ske=2025-07-16T12%3A47%3A37Z&sks=b&skv=2024-08-04&sig=eer4qfppeJCggvMe9Nb%2B%2BUnWR9TcPxIsfD9tou4RFd0%3D" />
-        <img src="https://sdmntprcentralus.oaiusercontent.com/files/00000000-50d4-61f5-b047-f07a9150370e/raw?se=2025-07-15T19%3A01%3A09Z&sp=r&sv=2024-08-04&sr=b&scid=1c592019-0e8b-5379-9777-fa76727680f1&skoid=b32d65cd-c8f1-46fb-90df-c208671889d4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-07-15T05%3A41%3A43Z&ske=2025-07-16T05%3A41%3A43Z&sks=b&skv=2024-08-04&sig=c10Sm/oVVDCzqNo7qCUkN1gio7/qv%2BmJ801V75pLqQw%3D" />
-      </div>
       <p>Kompyuterda matn yozish uchun nima kerak?</p>
+      <div class="images-container">
+        <img src="../public/notebook.webp" />
+        <img src="../public/keyboard.webp" />
+        <img src="../public/pen.webp" />
+      </div>
       <div class="answer_card" id="savol_1">
-        <button>Daftar</button><button>Klaviatura</button><button>Ruchka</button>
+        <button>Daftar</button>
+        <button>Klaviatura</button>
+        <button>Ruchka</button>
       </div>
     </div>
-
+    
     <div class="card">
       <h1>2-savol</h1>
-      <p>Quyidagilardan qaysi biri kompyuterga tegishli?</p>
-      <div>
-        <img src="https://sdmntprukwest.oaiusercontent.com/files/00000000-b200-6243-a374-09e2a64f3ba0/raw?se=2025-07-15T19%3A03%3A47Z&sp=r&sv=2024-08-04&sr=b&scid=619cf983-7974-55db-9b08-03de23466d6f&skoid=b32d65cd-c8f1-46fb-90df-c208671889d4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-07-15T06%3A28%3A45Z&ske=2025-07-16T06%3A28%3A45Z&sks=b&skv=2024-08-04&sig=dU344l3AprjO9Ed37W3qRTuKDhbK1wJU5QXsdTbdu7o%3D" />
-        <img src="https://sdmntprnortheu.oaiusercontent.com/files/00000000-fdbc-61f4-ba5e-593035e7403c/raw?se=2025-07-15T19%3A04%3A37Z&sp=r&sv=2024-08-04&sr=b&scid=c85497f7-4363-5cfb-8621-24463a593ace&skoid=b32d65cd-c8f1-46fb-90df-c208671889d4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-07-15T07%3A28%3A53Z&ske=2025-07-16T07%3A28%3A53Z&sks=b&skv=2024-08-04&sig=LAO2ir1wpYL%2BPbeeRQ7Gt1vopjLV/27jRxuTlll0wk0%3D" />
-        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjAiIGZpbGw9ImJsdWUiLz48L3N2Zz4=" />
+      <p>Berilgan rasmlardan qaysi biri "noutbuk" deb ataladi?</p>
+      <div class="images-container">
+        <img src="../public/doll.webp" />
+        <img src="../public/laptop.webp" />
+        <img src="../public/pc.webp" />
       </div>
-      <p>Quyidagilardan qaysi biri kompyuterga tegishli?</p>
-      <div class="answer_card" id="savol_2">
-        <button style="background:blue;"></button>
-        <button style="background:red;"></button>
-        <button style="background:green;"></button>
+      <div class="answer_card" id="savol_3">
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
       </div>
     </div>
 
     <div class="card">
       <h1>3-savol</h1>
-      <p><b>7</b> va <b>5</b> sonlaridan qaysi biri kattaroq?</p>
-      <div class="answer_card" id="savol_3">
-        <button>5</button><button>7</button><button>Ular teng</button>
+      <p>Quyidagilardan qaysi biri kompyuterga tegishli?</p>
+      <div class="images-container">
+        <img src="../public/sheet.webp" />
+        <img src="../public/mouse.webp" />
+        <img src="../public/toy.webp" />
+      </div>
+      <div class="answer_card" id="savol_2">
+        <button>Daftar varog'i</button>
+        <button>Sichqoncha</button>
+        <button>Qo'g'irchoq</button>
       </div>
     </div>
 
     <div class="card">
       <h1>4-savol</h1>
       <p>Qaysi biri ortiqcha?</p>
+      <div class="images-container">
+        <img src="../public/pc.webp" />
+        <img src="../public/phone.webp" />
+        <img src="../public/rabbit.webp" />
+      </div>
       <div class="answer_card" id="savol_4">
-        <button>Kitob</button><button>Qalam</button><button>Mushuk</button>
+        <button>Kompyuter</button>
+        <button>Telefon</button>
+        <button>Quyon</button>
       </div>
     </div>
 
     <div class="card">
       <h1>5-savol</h1>
-      <div>
-        <img src="/public/question_5_elephant.png" />
-        <img src="/public/question_5_horse.png" />
-        <img src="/public/question_5_rabit.png" />
+      <p>Musiqa eshitish uchun bizga nima kerak bo'ladi?</p>
+      <div class="images-container">
+        <img src="/public/pc2.webp" />
+        <img src="/public/keyboard.webp" />
+        <img src="/public/headphone.webp" />
       </div>
-      <p>Qaysi hayvon eng kichik?</p>
       <div class="answer_card" id="savol_5">
-        <button>Fil</button><button>Ot</button><button>Quyon</button>
+        <button>Kompyuter</button>
+        <button>Klaviatura</button>
+        <button>Quloqchin</button>
       </div>
-    </div>
-
-    <button class="end" id="end">Yakunlash</button>
-
-    <!-- Модальное окно для успешного прохождения -->
-    <div class="result-modal success-modal" id="successModal">
-      <div class="result-content">
-        <div class="result-title">🎉 Tabriklaymiz! 🎉</div>
-        <div class="result-message">Siz testni muvaffaqiyatli yakunladingiz!</div>
-        <div class="result-score" id="successScore"></div>
-        <button class="restart-btn" onclick="closeModal()">Tasdiqlash</button>
-      </div>
-    </div>
-
-    <!-- Модальное окно для неудачи -->
-    <div class="result-modal fail-modal" id="failModal">
-      <div class="result-content">
-        <div class="result-title">😔 Afsus...</div>
-        <div class="result-message">Testni yecha olmadingiz,<br>boshqa safar omadingiz keladi!</div>
-        <div class="result-score" id="failScore"></div>
-        <button class="restart-btn" onclick="closeModal()">Tasdiqlash</button>
-      </div>
-    </div>
-  </main>
-
-  <script>
-    // Исправленные правильные ответы (нумерация с 0)
-    const correctAnswerIndices = new Map([
-      ['savol_1', 1], // 5 (второй индекс)
-      ['savol_2', 1], // красный (второй индекс)
-      ['savol_3', 1], // 7 (второй индекс)
-      ['savol_4', 2], // Mushuk (третий индекс)
-      ['savol_5', 2], // Quyon (третий индекс)
-    ]);
-
-    const userAnswers = new Map();
-
-    // Создаем приятные звуки программно
-    function createSound(frequency, duration, type = 'sine') {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      
-      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-      oscillator.type = type;
-      
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-      
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + duration);
-    }
-
-    function playCorrectSound() {
-      try {
-        // Приятный звук "динь-динь"
-        createSound(523.25, 0.2); // До
-        setTimeout(() => createSound(659.25, 0.2), 100); // Ми
-      } catch (e) {
-        console.log('Звук не может быть воспроизведен');
-      }
-    }
-
-    function playIncorrectSound() {
-      try {
-        // Мягкий звук "упс"
-        createSound(220, 0.3, 'triangle');
-      } catch (e) {
-        console.log('Звук не может быть воспроизведен');
-      }
-    }
-
-    function playApplauseSound() {
-      try {
-        // Имитация аплодисментов через серию коротких звуков
-        const frequencies = [440, 523, 659, 784, 880];
-        frequencies.forEach((freq, index) => {
-          setTimeout(() => {
-            createSound(freq, 0.1, 'square');
-            createSound(freq * 1.5, 0.05, 'triangle');
-          }, index * 100);
-        });
-      } catch (e) {
-        console.log('Звук не может быть воспроизведен');
-      }
-    }
-
-    function playOopsSound() {
-      try {
-        // Мягкий звук разочарования
-        createSound(330, 0.4, 'sine');
-        setTimeout(() => createSound(220, 0.6, 'sine'), 200);
-      } catch (e) {
-        console.log('Звук не может быть воспроизведен');
-      }
-    }
-
-    correctAnswerIndices.forEach((correctIndex, qid) => {
-      const buttons = document.querySelectorAll(`#${qid} button`);
-      buttons.forEach((btn, index) => {
-        btn.addEventListener('click', () => {
-          // Проверяем, не отвечал ли уже пользователь на этот вопрос
-          if (userAnswers.has(qid)) {
-            return;
-          }
-
-          // Отключаем все кнопки в этом вопросе
-          buttons.forEach(b => b.disabled = true);
-          
-          if (index === correctIndex) {
-            btn.classList.add('correct');
-            userAnswers.set(qid, true);
-            playCorrectSound();
-          } else {
-            btn.classList.add('error');
-            userAnswers.set(qid, false);
-            playIncorrectSound();
-          }
-        });
-      });
-    });
-
-    document.getElementById('end').addEventListener('click', () => {
-      let totalCorrect = 0;
-      userAnswers.forEach(val => { if (val === true) totalCorrect++; });
-
-      const scoreText = `To'g'ri javoblar soni: ${totalCorrect} / 5`;
-
-      if (totalCorrect >= 4) {
-        // Успешное прохождение (4 или более правильных ответов)
-        document.getElementById('successScore').textContent = scoreText;
-        document.getElementById('successModal').style.display = 'flex';
-        playApplauseSound();
-      } else {
-        // Неудачное прохождение (менее 4 правильных ответов)
-        document.getElementById('failScore').textContent = scoreText;
-        document.getElementById('failModal').style.display = 'flex';
-        playOopsSound();
-      }
-    });
-
-    // Функция для закрытия модального окна
-    function closeModal() {
-      document.getElementById('successModal').style.display = 'none';
-      document.getElementById('failModal').style.display = 'none';
-    }
-
-    // Закрытие модальных окон по клику вне области контента
-    document.querySelectorAll('.result-modal').forEach(modal => {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          closeModal();
-        }
-      });
-    });
-  </script>
-</body>
-</html>
