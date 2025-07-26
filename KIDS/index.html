@@ -1,20 +1,24 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Savollar</title>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Junior IT Quiz</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Poppins', sans-serif;
     }
 
     body {
       background: #f3f7f9;
-      color: #333;
+      color: #112;
       padding: 20px;
     }
 
@@ -25,7 +29,6 @@
 
     header h1 {
       font-size: 2.5rem;
-      color: #2c3e50;
     }
 
     main {
@@ -40,27 +43,15 @@
       background: #ffffff;
       border-radius: 15px;
       padding: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(255, 87, 34, 0.1);
     }
 
-    .images-container {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      margin: 15px 0;
+    .card h1 {
+      color: #112;
     }
 
-    .card img {
-      flex: 1;
-      max-width: 100%;
-      height: 400px;
-      border-radius: 8px;
-      border: 2px solid #e0e0e0;
-      transition: transform 0.3s ease;
-    }
-
-    .card img:hover {
-      transform: scale(1.05);
+    .card p {
+      line-height: 1.8;
     }
 
     .answer_card {
@@ -71,54 +62,52 @@
     }
 
     .answer_card button {
-      flex: 1;
+      flex: 1 1 calc(50% - 10px);
       padding: 12px 20px;
       font-size: 1rem;
-      border: none;
+      border: 2px solid #112;
       border-radius: 8px;
-      background-color: #3498db;
-      color: white;
+      background-color: #ffffff;
+      color: #112;
       cursor: pointer;
+      box-shadow: 0 4px 6px rgba(17, 17, 34, 0.1);
       transition: background-color 0.3s, transform 0.2s;
-      min-width: 0;
     }
 
     .answer_card button:hover:not(:disabled) {
-      background-color: #2980b9;
+      background-color: #e0f0ff;
       transform: scale(1.05);
     }
 
-    .answer_card button:disabled {
-      cursor: not-allowed;
-      opacity: 0.7;
+    .selected-answer {
+      background-color: #ff5722 !important;
+      color: #fff !important;
+      border-color: #ff5722 !important;
+      box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.4);
+      transform: scale(1.02);
     }
-
-    .correct { background-color: #2ecc71 !important; }
-    .error { background-color: #e74c3c !important; }
 
     .end {
       display: block;
       margin: 40px auto;
       padding: 14px 28px;
       font-size: 1.1rem;
-      background-color: #27ae60;
-      color: white;
-      border: none;
+      background-color: #ffffff;
+      color: #112;
+      border: 2px solid #112;
       border-radius: 8px;
       cursor: pointer;
+      box-shadow: 0 6px 10px rgba(255, 87, 34, 0.3);
       transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
     .end:hover {
-      background-color: #219150;
+      background-color: #ff5722;
+      color: #fff;
+      border-color: #ff5722;
       transform: scale(1.05);
     }
 
-    .end:active{
-      background-color: #2ecc71;
-    }
-
-    /* Модальные окна для результатов */
     .result-modal {
       display: none;
       position: fixed;
@@ -126,387 +115,399 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(17, 17, 34, 0.9);
       justify-content: center;
       align-items: center;
       z-index: 1000;
     }
 
     .result-content {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 50px;
+      background: #fff;
+      color: #112;
+      padding: 30px;
       border-radius: 20px;
       text-align: center;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      max-width: 500px;
-      width: 90%;
-      animation: modalAppear 0.5s ease-out;
-    }
-
-    .success-modal .result-content {
-      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-    }
-
-    .fail-modal .result-content {
-      background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
-    }
-
-    @keyframes modalAppear {
-      from {
-        opacity: 0;
-        transform: scale(0.7);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      max-width: 90%;
+      width: 400px;
     }
 
     .result-title {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      font-weight: bold;
+      font-size: 2rem;
+      margin-bottom: 15px;
     }
 
     .result-message {
-      font-size: 1.3rem;
-      margin-bottom: 30px;
-      line-height: 1.6;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
     }
 
     .result-score {
-      font-size: 1.8rem;
-      margin-bottom: 30px;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
-      backdrop-filter: blur(10px);
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #f0f0f0;
+      border-radius: 8px;
     }
 
     .restart-btn {
-      padding: 15px 30px;
-      font-size: 1.1rem;
-      background: rgba(255, 255, 255, 0.9);
-      color: #333;
-      border: none;
-      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #ffffff;
+      color: #112;
+      border: 2px solid #112;
+      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.3s ease;
       font-weight: bold;
+      transition: all 0.3s ease;
     }
 
     .restart-btn:hover {
-      background: white;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      background-color: #ff5722;
+      color: #fff;
+      border-color: #ff5722;
     }
 
-    /* Адаптивность для мобильных устройств */
-    @media (max-width: 768px) {
-      body {
-        padding: 10px;
-      }
-
-      header h1 {
-        font-size: 2rem;
+    @media (max-width: 600px) {
+      .answer_card button {
+        flex: 1 1 100%;
       }
 
       .card {
         padding: 15px;
       }
 
-      .images-container {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .card img {
-        height: 90px;
-      }
-
-      .answer_card {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .answer_card button {
-        padding: 15px;
-        font-size: 1rem;
-      }
-
       .result-content {
-        padding: 30px 20px;
-      }
-
-      .result-title {
-        font-size: 2rem;
-      }
-
-      .result-message {
-        font-size: 1.1rem;
-      }
-
-      .result-score {
-        font-size: 1.5rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      header h1 {
-        font-size: 1.8rem;
-      }
-
-      .card {
-        padding: 12px;
-      }
-
-      .card img {
-        height: 80px;
-      }
-
-      .answer_card button {
-        padding: 12px;
-        font-size: 0.9rem;
-      }
-
-      .end {
-        padding: 12px 24px;
-        font-size: 1rem;
-      }
-
-      .result-content {
-        padding: 25px 15px;
-      }
-
-      .result-title {
-        font-size: 1.8rem;
-      }
-
-      .result-message {
-        font-size: 1rem;
-      }
-
-      .result-score {
-        font-size: 1.3rem;
-        padding: 12px;
+        width: 90%;
       }
     }
   </style>
+  <style>
+    .reading-block {
+      max-width: 800px;
+      margin: auto;
+      padding: 25px 30px;
+      border-radius: 16px;
+      background-color: #fff;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+
+    .reading-title {
+      text-align: left;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #000;
+      margin-bottom: 1rem;
+    }
+
+    .reading-paragraph {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: 1.2rem;
+      color: #000;
+    }
+
+    .reading-paragraph strong {
+      font-weight: bold;
+    }
+
+    /* Responsive for mobile */
+    @media (max-width: 600px) {
+      .reading-block {
+        padding: 18px 16px;
+        border-radius: 12px;
+      }
+
+      .reading-title {
+        font-size: 1.2rem;
+      }
+
+      .reading-paragraph {
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+    }
+  </style>
+  <style>
+    .audio-card {
+      background: #fff;
+      padding: 20px 25px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .audio-card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: #112;
+    }
+
+    .styled-audio {
+      width: 100%;
+      border-radius: 10px;
+      outline: none;
+      background: #fafafa;
+    }
+
+    @media (max-width: 600px) {
+      .audio-card {
+        padding: 18px;
+        border-radius: 12px;
+      }
+
+      .audio-card h2 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+  <style>
+    .robot-card {
+      max-width: 850px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, #ffffff, #f0f4f8);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .robot-title {
+      text-align: center;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #112;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.3px;
+    }
+
+    .robot-paragraph {
+      font-size: 1.1rem;
+      line-height: 1.85;
+      margin-bottom: 1.4rem;
+      color: #333;
+      text-align: justify;
+    }
+
+    @media (max-width: 600px) {
+      .robot-card {
+        padding: 20px 16px;
+        border-radius: 14px;
+      }
+
+      .robot-title {
+        font-size: 1.5rem;
+      }
+
+      .robot-paragraph {
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+    }
+  </style>
+  <style>
+    .robot-card {
+      background: linear-gradient(to right, #f8fafc, #eef2f7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .robot-image {
+      display: block;
+      max-width: 140px;
+      margin: 0 auto 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 </head>
+
 <body>
-  <header><h1>Savollar</h1></header>
   <main>
+    <header>
+      <h1>1-shart. O'qish</h1>
+    </header>
+    <div class="card reading-block robot-card"><img alt="Junior Robot" class="robot-image" src="../public/robot.jpg" />
+      <h1 class="robot-title">Robotning hikoyasi</h1>
+      <p class="robot-paragraph">Salom, do'stim! Bu men – Juni robot. Bugun men dasturchilar maktabiga bordim.
+        Darsni noutbuklarni yoqishdan boshladik.</p>
+      <p class="robot-paragraph">O'qituvchi bizga Shift tugmachasini ko'rsatdi va uning nima uchun kerakligini
+        tushuntirdi. Ma'lum bo'lishicha, uning yordamida katta harflar va maxsus belgilar yozish mumkin ekan.</p>
+      <p class="robot-paragraph">Keyin biz kompyuterlar ikki qismdan iboratligini o'rgandik: Hardware va Software.
+        Hardware – bu teginish mumkin bo'lgan hamma narsa: klaviatura, monitor, sichqoncha. Software esa dasturlar
+        hisoblanadi, masalan, o'yinlar yoki brauzer.</p>
+      <p class="robot-paragraph">Bir bola noto'g'ri joyga bosdi va unda xato paydo bo'ldi. O'qituvchi buni bag deb atadi
+        – dasturchilar koddagi nosozlikni shunday atashadi. Birgalikda biz bagni topdik va uni tuzatdik.</p>
+      <p class="robot-paragraph">Dars oxirida esa "kompyuter" so‘zini xatosiz eng tez kim yozish bo‘yicha
+        musobaqalashdik. Men afsuski yuta olmadim, lekin juda harakat qildim – bu esa mening yutug‘im!</p>
+    </div>
+    <header>
+      <h1>2-shart. Savollarga javob</h1>
+    </header>
     <div class="card">
       <h1>1-savol</h1>
-      <p>Kompyuterda matn yozish uchun nima kerak?</p>
-      <div class="images-container">
-        <img src="../public/notebook.webp" />
-        <img src="../public/keyboard.webp" />
-        <img src="../public/pen.webp" />
-      </div>
+      <p>Juni hikoya boshida qayerga keldi?</p>
       <div class="answer_card" id="savol_1">
-        <button>Daftar</button>
-        <button>Klaviatura</button>
-        <button>Ruchka</button>
+        <button>Ustaxonaga</button><button>Maktabga</button><button>Do'konga</button>
       </div>
     </div>
-    
     <div class="card">
       <h1>2-savol</h1>
-      <p>Berilgan rasmlardan qaysi biri "noutbuk" deb ataladi?</p>
-      <div class="images-container">
-        <img src="../public/doll.webp" />
-        <img src="../public/laptop.webp" />
-        <img src="../public/pc.webp" />
-      </div>
-      <div class="answer_card" id="savol_3">
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-      </div>
+      <p>Shift tugmachasi nima qila oladi?</p>
+      <div class="answer_card" id="savol_2"><button>Ovozni oshiradi</button><button>Katta harflar yozishga yordam
+          beradi</button><button>Kompyuterni ishga tushiradi</button></div>
     </div>
-
     <div class="card">
       <h1>3-savol</h1>
-      <p>Quyidagilardan qaysi biri kompyuterga tegishli?</p>
-      <div class="images-container">
-        <img src="../public/sheet.webp" />
-        <img src="../public/mouse.webp" />
-        <img src="../public/toy.webp" />
-      </div>
-      <div class="answer_card" id="savol_2">
-        <button>Daftar varog'i</button>
-        <button>Sichqoncha</button>
-        <button>Qo'g'irchoq</button>
-      </div>
+      <p>Juni fikricha, Hardware nima?</p>
+      <div class="answer_card" id="savol_3"><button>Teginish mumkin bo'lgan narsa</button><button>Kompyuter
+          o'yinlari</button><button>Internet va saytlar</button></div>
     </div>
-
     <div class="card">
       <h1>4-savol</h1>
-      <p>Qaysi biri ortiqcha?</p>
-      <div class="images-container">
-        <img src="../public/pc.webp" />
-        <img src="../public/phone.webp" />
-        <img src="../public/rabbit.webp" />
-      </div>
-      <div class="answer_card" id="savol_4">
-        <button>Kompyuter</button>
-        <button>Telefon</button>
-        <button>Quyon</button>
-      </div>
+      <p>Qaysi biri Hardware misoli?</p>
+      <div class="answer_card" id="savol_4"><button>Instagram</button><button>YouTube
+          sayti</button><button>Klaviatura</button></div>
     </div>
-
     <div class="card">
       <h1>5-savol</h1>
-      <p>Musiqa eshitish uchun bizga nima kerak bo'ladi?</p>
-      <div class="images-container">
-        <img src="/public/pc2.webp" />
-        <img src="/public/keyboard.webp" />
-        <img src="/public/headphone.webp" />
+      <p>Qaysi biri Softwarega tegishli?</p>
+      <div class="answer_card" id="savol_5"><button>Kompyuter sichqonchasi</button><button>Zaryadlash
+          kabeli</button><button>Brauzer</button></div>
+    </div>
+    <div class="card">
+      <h1>6-savol</h1>
+      <p>Dasturchilar koddagi xatoni nima deb atashadi?</p>
+      <div class="answer_card" id="savol_6"><button>Nosozlik</button><button>Xatocha</button><button>Bag</button></div>
+    </div>
+    <div class="card">
+      <h1>7-savol</h1>
+      <p>Juni nima uchun xursand bo'ldi?</p>
+      <div class="answer_card" id="savol_7"><button>U yutmagan bo'lsa ham harakat qildi</button><button>U so'zni
+          hammadan tezroq yozdi</button><button>U boshqaning kodini tuzatdi</button></div>
+    </div>
+    <header>
+      <h1>3-shart. Audio tinglang</h1>
+    </header>
+    <div class="card audio-card">
+      <div class="card reading-block robot-card"><img src="../public/robot.jpg" alt="Junior Robot" class="robot-image"></div>
+      <h2>Audio matnni tinglang:</h2><audio class="styled-audio" controls="True"
+        src="../public/listening.ogg"></audio>
+    </div>
+    <header>
+      <h1>4-shart. Tinglovdan keyingi savollar</h1>
+    </header>
+    <div class="card">
+      <h1>1-savol</h1>
+      <p>Juni hikoya boshida qayerga keldi?</p>
+      <div class="answer_card" id="new_savol_1"><button>Ustaxonaga</button><button>Maktabga</button><button>Do'konga</button></div>
+    </div>
+    <div class="card">
+      <h1>2-savol</h1>
+      <p>Birinchi navbatda u nima qildi?</p>
+      <div class="answer_card" id="new_savol_2"><button>O'yin o'ynadi</button><button>Noutbukini ochdi</button><button>Film ko'rdi</button></div>
+    </div>
+    <div class="card">
+      <h1>3-savol</h1>
+      <p>Nima uchun u sichqonchani uladi?</p>
+      <div class="answer_card" id="new_savol_3"><button>O'ynash uchun</button><button>Kursor boshqarish uchun</button><button>Ovozni tekshirish uchun</button></div>
+    </div>
+    <div class="card">
+      <h1>4-savol</h1>
+      <p>Hikoyada "bag" nima?</p>
+      <div class="answer_card" id="new_savol_4"><button>Dasturdagi xato</button><button>O'yin nomi</button><button>Parol</button></div>
+    </div>
+    <div class="card">
+      <h1>5-savol</h1>
+      <p>Juni muammoni qanday tuzatdi?</p>
+      <div class="answer_card" id="new_savol_5"><button>Kompyuterni qayta ishga tushirdi</button><button>Do'stiga murojaat qildi</button><button>Kodda xatoni topib tuzatdi</button></div>
+    </div>
+    <div class="card">
+      <h1>6-savol</h1>
+      <p>U o'ynagan o'yinning nomi nima edi?</p>
+      <div class="answer_card" id="new_savol_6"><button>"Robotni qur"</button><button>"Kompyuterni yig'ing"</button><button>"Baglarni tut"</button></div>
+    </div>
+    <div class="card">
+      <h1>7-savol</h1>
+      <p>Bu o'yinda nima qilish kerak edi?</p>
+      <div class="answer_card" id="new_savol_7"><button>Parollar o'ylab topish</button><button>Baglarni topish</button><button>Kompyuter qismlarini yig'ish</button></div>
+    </div><button class="end" id="end">Yakunlash</button>
+    <div class="result-modal" id="successModal">
+      <div class="result-content">
+        <div class="result-title">🎉 Tabriklaymiz!</div>
+        <div class="result-message">Siz testni muvaffaqiyatli yakunladingiz!</div>
+        <div class="result-score" id="successScore"></div>
+        <button class="restart-btn" onclick="closeModal()">Tasdiqlash</button>
       </div>
-      <div class="answer_card" id="savol_5">
-        <button>Kompyuter</button>
-        <button>Klaviatura</button>
-        <button>Quloqchin</button>
+    </div>
+    <div class="result-modal" id="failModal">
+      <div class="result-content">
+        <div class="result-title">😔 Afsus...</div>
+        <div class="result-message">Testni yakunlay olmadingiz.</div>
+        <div class="result-score" id="failScore"></div>
+        <button class="restart-btn" onclick="closeModal()">Tasdiqlash</button>
       </div>
-      </div>
-      <button class="end" id="end">Yakunlash</button>
+    </div>
+    <script>
+      const correctAnswers = {
+        'savol_1': 1,
+        'savol_2': 1,
+        'savol_3': 0,
+        'savol_4': 2,
+        'savol_5': 2,
+        'savol_6': 2,
+        'savol_7': 0,
+        'new_savol_1': 1,
+        'new_savol_2': 1,
+        'new_savol_3': 1,
+        'new_savol_4': 0,
+        'new_savol_5': 2,
+        'new_savol_6': 1,
+        'new_savol_7': 2
+      };
 
-<!-- Модальные окна -->
-<div class="result-modal success-modal" id="successModal">
-  <div class="result-content">
-    <div class="result-title">🎉 Tabriklaymiz! 🎉</div>
-    <div class="result-message">Siz testni muvaffaqiyatli yakunladingiz!</div>
-    <div class="result-score" id="successScore"></div>
-    <button class="restart-btn" onclick="closeModal()">Tasdiqlash</button>
-  </div>
-</div>
+      const userAnswers = {};
 
-<div class="result-modal fail-modal" id="failModal">
-  <div class="result-content">
-    <div class="result-title">😔 Afsus...</div>
-    <div class="result-message">Testni yecha olmadingiz,<br>boshqa safar omadingiz keladi!</div>
-    <div class="result-score" id="failScore"></div>
-    <button class="restart-btn" onclick="closeModal()">Tasdiqlash</button>
-  </div>
-</div>
+      const SELECTED_CLASS = 'selected-answer';
 
-<script>
-  const correctAnswerIndices = new Map([
-    ['savol_1', 1],
-    ['savol_2', 1],
-    ['savol_3', 1],
-    ['savol_4', 2],
-    ['savol_5', 2],
-  ]);
-
-  const userAnswers = new Map();
-
-  function createSound(frequency, duration, type = 'sine') {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-
-    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-    oscillator.type = type;
-
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + duration);
-  }
-
-  function playCorrectSound() {
-    try {
-      createSound(523.25, 0.2);
-      setTimeout(() => createSound(659.25, 0.2), 100);
-    } catch (e) {
-      console.log('Звук не может быть воспроизведен');
-    }
-  }
-
-  function playIncorrectSound() {
-    try {
-      createSound(220, 0.3, 'triangle');
-    } catch (e) {
-      console.log('Звук не может быть воспроизведен');
-    }
-  }
-
-  function playApplauseSound() {
-    try {
-      const frequencies = [440, 523, 659, 784, 880];
-      frequencies.forEach((freq, index) => {
-        setTimeout(() => {
-          createSound(freq, 0.1, 'square');
-          createSound(freq * 1.5, 0.05, 'triangle');
-        }, index * 100);
+      Object.entries(correctAnswers).forEach(([qid, correctIndex]) => {
+        const buttons = document.querySelectorAll(`#${qid} button`);
+        buttons.forEach((btn, index) => {
+          btn.addEventListener('click', () => {
+            buttons.forEach(b => b.classList.remove(SELECTED_CLASS));
+            btn.classList.add(SELECTED_CLASS);
+            userAnswers[qid] = index === correctIndex;
+          });
+        });
       });
-    } catch (e) {
-      console.log('Звук не может быть воспроизведен');
-    }
-  }
 
-  function playOopsSound() {
-    try {
-      createSound(330, 0.4, 'sine');
-      setTimeout(() => createSound(220, 0.6, 'sine'), 200);
-    } catch (e) {
-      console.log('Звук не может быть воспроизведен');
-    }
-  }
+      document.getElementById('end').addEventListener('click', () => {
+        let totalCorrect = Object.values(userAnswers).filter(v => v).length;
+        const totalQuestions = Object.keys(correctAnswers).length;
+        const percent = Math.round((totalCorrect / totalQuestions) * 100);
+        const scoreText = `Natija: ${percent}% / 100%`;
 
-  correctAnswerIndices.forEach((correctIndex, qid) => {
-    const buttons = document.querySelectorAll(`#${qid} button`);
-    buttons.forEach((btn, index) => {
-      btn.addEventListener('click', () => {
-        if (userAnswers.has(qid)) return;
-
-        buttons.forEach(b => b.disabled = true);
-
-        if (index === correctIndex) {
-          btn.classList.add('correct');
-          userAnswers.set(qid, true);
-          playCorrectSound();
+        if (percent >= 55) {
+          document.getElementById('successScore').textContent = scoreText;
+          document.getElementById('successModal').style.display = 'flex';
         } else {
-          btn.classList.add('error');
-          userAnswers.set(qid, false);
-          playIncorrectSound();
+          document.getElementById('failScore').textContent = scoreText;
+          document.getElementById('failModal').style.display = 'flex';
         }
       });
-    });
-  });
 
-  document.getElementById('end').addEventListener('click', () => {
-    let totalCorrect = 0;
-    userAnswers.forEach(val => { if (val === true) totalCorrect++; });
+      function closeModal() {
+        document.getElementById('successModal').style.display = 'none';
+        document.getElementById('failModal').style.display = 'none';
+      }
 
-    const scoreText = `To'g'ri javoblar soni: ${totalCorrect} / 5`;
+      document.querySelectorAll('.result-modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal();
+        });
+      });
+    </script>
+  </main>
+</body>
 
-    if (totalCorrect >= 4) {
-      document.getElementById('successScore').textContent = scoreText;
-      document.getElementById('successModal').style.display = 'flex';
-      playApplauseSound();
-    } else {
-      document.getElementById('failScore').textContent = scoreText;
-      document.getElementById('failModal').style.display = 'flex';
-      playOopsSound();
-    }
-  });
-
-  function closeModal() {
-    document.getElementById('successModal').style.display = 'none';
-    document.getElementById('failModal').style.display = 'none';
-  }
-
-  document.querySelectorAll('.result-modal').forEach(modal => {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
-    });
-  });
-</script>
+</html>
