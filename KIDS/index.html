@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="uz">
+
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -8,125 +9,427 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body { background: #f3f7f9; color: #112; padding: 20px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
 
-    header { text-align: center; margin-bottom: 30px; }
-    header h1 { font-size: 2.5rem; }
+    body {
+      background: #f3f7f9;
+      color: #112;
+      padding: 20px;
+    }
 
-    main { max-width: 900px; margin: auto; display: flex; flex-direction: column; gap: 30px; }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-    .card { background: #ffffff; border-radius: 15px; padding: 20px; box-shadow: 0 4px 12px rgba(255, 87, 34, 0.1); }
-    .card h1 { color: #112; }
-    .card p { line-height: 1.8; }
+    header h1 {
+      font-size: 2.0rem;
+    }
 
-    .answer_card { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px; }
+    main {
+      max-width: 900px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(255, 87, 34, 0.1);
+    }
+
+    .card h1 {
+      color: #112;
+      font-size: 1.25rem;
+    }
+
+    .card p {
+      line-height: 1.8;
+    }
+
+    .answer_card {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
     .answer_card button {
       flex: 1 1 calc(50% - 10px);
-      padding: 12px 20px; font-size: 1rem;
-      border: 2px solid #112; border-radius: 8px;
-      background-color: #ffffff; color: #112; cursor: pointer;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: 2px solid #112;
+      border-radius: 8px;
+      background-color: #ffffff;
+      color: #112;
+      cursor: pointer;
       box-shadow: 0 4px 6px rgba(17, 17, 34, 0.1);
       transition: background-color 0.3s, transform 0.2s;
     }
-    .answer_card button:hover:not(:disabled) { background-color: #e0f0ff; transform: scale(1.05); }
+
+    .answer_card button:hover:not(:disabled) {
+      background-color: #e0f0ff;
+      transform: scale(1.05);
+    }
 
     .selected-answer {
-      background-color: #ff5722 !important; color: #fff !important; border-color: #ff5722 !important;
-      box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.4); transform: scale(1.02);
+      background-color: #ff5722 !important;
+      color: #fff !important;
+      border-color: #ff5722 !important;
+      box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.4);
+      transform: scale(1.02);
     }
 
     .end {
-      display: block; margin: 40px auto; padding: 14px 28px; font-size: 1.1rem;
-      background-color: #ffffff; color: #112; border: 2px solid #112; border-radius: 8px; cursor: pointer;
-      box-shadow: 0 6px 10px rgba(255, 87, 34, 0.3); transition: background-color 0.3s ease, transform 0.2s ease;
+      display: block;
+      margin: 40px auto;
+      padding: 14px 28px;
+      font-size: 1.1rem;
+      background-color: #ffffff;
+      color: #112;
+      border: 2px solid #112;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 6px 10px rgba(255, 87, 34, 0.3);
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
-    .end:hover { background-color: #ff5722; color: #fff; border-color: #ff5722; transform: scale(1.05); }
+
+    .end:hover {
+      background-color: #ff5722;
+      color: #fff;
+      border-color: #ff5722;
+      transform: scale(1.05);
+    }
 
     .result-modal {
-      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background-color: rgba(17, 17, 34, 0.9); justify-content: center; align-items: center; z-index: 1000;
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(17, 17, 34, 0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 16px;
     }
-    .result-content {
-      background: #fff; color: #112; padding: 30px; border-radius: 20px; text-align: center;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); max-width: 90%; width: 400px;
-    }
-    .result-title { font-size: 2rem; margin-bottom: 15px; }
-    .result-message { font-size: 1.2rem; margin-bottom: 10px; }
-    .result-name { font-weight: 600; margin: 8px 0 16px; }
-    .result-score {
-      font-size: 1.5rem; margin-bottom: 20px; padding: 10px; background: #f0f0f0; border-radius: 8px;
-    }
-    .restart-btn {
-      padding: 12px 24px; font-size: 1rem; background-color: #ffffff; color: #112;
-      border: 2px solid #112; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease;
-    }
-    .restart-btn:hover { background-color: #ff5722; color: #fff; border-color: #ff5722; }
 
-    @media (max-width: 600px) {
-      .answer_card button { flex: 1 1 100%; }
-      .card { padding: 15px; }
-      .result-content { width: 90%; }
+    .result-content {
+      background: #fff;
+      color: #112;
+      padding: 24px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      max-width: 520px;
+      width: 100%;
+    }
+
+    .result-title {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+
+    .result-message {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .result-name {
+      font-weight: 600;
+      margin: 8px 0 14px;
+    }
+
+    .result-score {
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+      padding: 10px;
+      background: #f0f0f0;
+      border-radius: 8px;
+    }
+
+    .restart-btn {
+      padding: 12px 18px;
+      font-size: 1rem;
+      background-color: #ffffff;
+      color: #112;
+      border: 2px solid #112;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .restart-btn:hover {
+      background-color: #ff5722;
+      color: #fff;
+      border-color: #ff5722;
+    }
+
+    /* ======= F.I.O sticky form — RESPONSIVE ======= */
+    #student-id {
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      /* pastga biroz masofa */
+    }
+
+    #student-id .fio-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    #student-id label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1 1 260px;
+      min-width: 0;
+    }
+
+    #student-id input {
+      padding: 12px 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      width: 100%;
+      font-size: 16px;
+      /* iOS zoom'ni oldini oladi */
+    }
+
+    #student-id button {
+      padding: 12px 16px;
+      border: none;
+      background: #ff5722;
+      color: #fff;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      flex: 0 0 auto;
+    }
+
+    #savedNameHint {
+      font: 14px/1.4 Poppins, sans-serif;
+      color: #4caf50;
+      margin-left: 6px;
+    }
+
+    @media (max-width: 640px) {
+      header h1 {
+        font-size: 1.4rem;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .answer_card button {
+        flex: 1 1 100%;
+      }
+
+      #student-id {
+        padding: 10px 12px;
+      }
+
+      #student-id .fio-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      #student-id button {
+        width: 100%;
+        font-size: 16px;
+      }
+
+      #savedNameHint {
+        display: block;
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 360px) {
+      #student-id {
+        padding: 8px 10px;
+      }
     }
   </style>
 
   <!-- Reading block styles -->
   <style>
-    .reading-block { max-width: 800px; margin: auto; padding: 25px 30px; border-radius: 16px; background-color: #fff; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); }
-    .reading-title { text-align: left; font-weight: 700; font-size: 1.4rem; color: #000; margin-bottom: 1rem; }
-    .reading-paragraph { font-size: 1.05rem; line-height: 1.75; margin-bottom: 1.2rem; color: #000; }
-    .reading-paragraph strong { font-weight: bold; }
+    .reading-block {
+      max-width: 800px;
+      margin: auto;
+      padding: 25px 30px;
+      border-radius: 16px;
+      background-color: #fff;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+
+    .reading-title {
+      text-align: left;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #000;
+      margin-bottom: 1rem;
+    }
+
+    .reading-paragraph {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: 1.2rem;
+      color: #000;
+    }
+
+    .reading-paragraph strong {
+      font-weight: bold;
+    }
+
     @media (max-width: 600px) {
-      .reading-block { padding: 18px 16px; border-radius: 12px; }
-      .reading-title { font-size: 1.2rem; }
-      .reading-paragraph { font-size: 1rem; line-height: 1.6; }
+      .reading-block {
+        padding: 18px 16px;
+        border-radius: 12px;
+      }
+
+      .reading-title {
+        font-size: 1.2rem;
+      }
+
+      .reading-paragraph {
+        font-size: 1rem;
+        line-height: 1.6;
+      }
     }
   </style>
 
   <!-- Audio card styles -->
   <style>
-    .audio-card { background: #fff; padding: 20px 25px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); max-width: 800px; margin: auto; }
-    .audio-card h2 { font-size: 1.25rem; margin-bottom: 1rem; color: #112; }
-    .styled-audio { width: 100%; border-radius: 10px; outline: none; background: #fafafa; }
+    .audio-card {
+      background: #fff;
+      padding: 20px 25px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .audio-card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: #112;
+    }
+
+    .styled-audio {
+      width: 100%;
+      border-radius: 10px;
+      outline: none;
+      background: #fafafa;
+    }
+
     @media (max-width: 600px) {
-      .audio-card { padding: 18px; border-radius: 12px; }
-      .audio-card h2 { font-size: 1.1rem; }
+      .audio-card {
+        padding: 18px;
+        border-radius: 12px;
+      }
+
+      .audio-card h2 {
+        font-size: 1rem;
+      }
     }
   </style>
 
   <!-- Robot card styles -->
   <style>
-    .robot-card { max-width: 850px; margin: auto; padding: 30px; border-radius: 20px; background: linear-gradient(145deg, #ffffff, #f0f4f8); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); }
-    .robot-title { text-align: center; font-size: 1.9rem; font-weight: 700; color: #112; margin-bottom: 1.5rem; letter-spacing: 0.3px; }
-    .robot-paragraph { font-size: 1.1rem; line-height: 1.85; margin-bottom: 1.4rem; color: #333; text-align: justify; }
+    .robot-card {
+      max-width: 850px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, #ffffff, #f0f4f8);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .robot-title {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #112;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.3px;
+    }
+
+    .robot-paragraph {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      margin-bottom: 1.2rem;
+      color: #333;
+      text-align: justify;
+    }
+
     @media (max-width: 600px) {
-      .robot-card { padding: 20px 16px; border-radius: 14px; }
-      .robot-title { font-size: 1.5rem; }
-      .robot-paragraph { font-size: 1rem; line-height: 1.6; }
+      .robot-card {
+        padding: 20px 16px;
+        border-radius: 14px;
+      }
+
+      .robot-title {
+        font-size: 1.25rem;
+      }
+
+      .robot-paragraph {
+        font-size: 1rem;
+        line-height: 1.6;
+      }
     }
   </style>
   <style>
-    .robot-card { background: linear-gradient(to right, #f8fafc, #eef2f7); position: relative; overflow: hidden; }
-    .robot-image { display: block; max-width: 140px; margin: 0 auto 20px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); }
+    .robot-card {
+      background: linear-gradient(to right, #f8fafc, #eef2f7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .robot-image {
+      display: block;
+      max-width: 140px;
+      margin: 0 auto 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
   </style>
 </head>
 
 <body>
   <main>
-    <!-- ====== YUQORIDAGI F.I.O FORM (sahifa tepasida) ====== -->
-    <section id="student-id" style="position:sticky; top:0; background:#fff; z-index:10; border-bottom:1px solid #eee; padding:12px 16px; display:flex; gap:8px; align-items:end; border-radius:10px;">
-      <label style="display:flex; flex-direction:column; gap:6px;">
-        <span style="font-size:14px;">Ism</span>
-        <input id="firstName" type="text" placeholder="Ismingiz:" style="padding:10px 12px; border:1px solid #ddd; border-radius:8px; min-width:160px;">
-      </label>
-      <label style="display:flex; flex-direction:column; gap:6px;">
-        <span style="font-size:14px;">Familiya</span>
-        <input id="lastName" type="text" placeholder="Familyangiz:" style="padding:10px 12px; border:1px solid #ddd; border-radius:8px; min-width:180px;">
-      </label>
-      <button id="saveNameBtn" type="button" style="padding:10px 14px; border:none; background:#ff5722; color:#fff; border-radius:10px; cursor:pointer; font-weight:600;">
-        Saqlash
-      </button>
-      <span id="savedNameHint" style="font:14px/1.4 Poppins, sans-serif; color:#4caf50; display:none; margin-left:6px;">Ism saqlandi ✅</span>
+    <!-- ====== YUQORIDAGI F.I.O FORM (mobilga mos) ====== -->
+    <section id="student-id" aria-label="O'quvchi ma'lumotlari">
+      <div class="fio-row">
+        <label for="firstName">
+          <span>Ism</span>
+          <input id="firstName" type="text" placeholder="Anvar" inputmode="text" autocomplete="given-name">
+        </label>
+
+        <label for="lastName">
+          <span>Familiya</span>
+          <input id="lastName" type="text" placeholder="Sanaev" inputmode="text" autocomplete="family-name">
+        </label>
+
+        <button id="saveNameBtn" type="button">Saqlash</button>
+        <span id="savedNameHint" style="display:none;">Ism saqlandi ✅</span>
+      </div>
     </section>
 
     <header>
@@ -228,7 +531,8 @@
     </header>
 
     <div class="card audio-card">
-      <div class="card reading-block robot-card"><img src="../public/robot.jpg" alt="Junior Robot" class="robot-image"></div>
+      <div class="card reading-block robot-card"><img src="../public/robot.jpg" alt="Junior Robot" class="robot-image">
+      </div>
       <h2>Audio matnni tinglang:</h2>
       <audio class="styled-audio" controls src="../public/listening.ogg"></audio>
     </div>
@@ -332,7 +636,7 @@
     </div>
 
     <script>
-      // ==== Javoblar konfiguratsiyasi ====
+      // ==== To'g'ri javoblar ====
       const correctAnswers = {
         'savol_1': 1,
         'savol_2': 1,
@@ -364,36 +668,35 @@
         });
       });
 
-      // ====== F.I.O yordamchi funksiyalar ======
-      function cap(s){ if(!s) return ""; s = s.trim(); return s.charAt(0).toUpperCase()+s.slice(1); }
-      function setFullName(first, last){
+      // ====== F.I.O funksiyalar ======
+      function cap(s) { if (!s) return ""; s = s.trim(); return s.charAt(0).toUpperCase() + s.slice(1); }
+      function setFullName(first, last) {
         const full = [cap(first), cap(last)].filter(Boolean).join(" ").trim();
         if (!full) return "";
         localStorage.setItem("quiz_full_name", full);
         return full;
       }
-      function getFullName(){ return localStorage.getItem("quiz_full_name") || ""; }
+      function getFullName() { return localStorage.getItem("quiz_full_name") || ""; }
 
       // Forma init
-      (function initNameForm(){
+      (function initNameForm() {
         const first = document.getElementById("firstName");
-        const last  = document.getElementById("lastName");
-        const btn   = document.getElementById("saveNameBtn");
-        const hint  = document.getElementById("savedNameHint");
+        const last = document.getElementById("lastName");
+        const btn = document.getElementById("saveNameBtn");
+        const hint = document.getElementById("savedNameHint");
 
-        // Oldin saqlangan bo'lsa — ko'rsatamiz
         const saved = getFullName();
-        if (saved){
+        if (saved) {
           const parts = saved.split(" ");
           first.value = parts[0] || "";
-          last.value  = parts.slice(1).join(" ");
+          last.value = parts.slice(1).join(" ");
           hint.style.display = "inline";
           hint.textContent = `Saqlandi: ${saved}`;
         }
 
-        btn.addEventListener("click", ()=>{
+        btn.addEventListener("click", () => {
           const full = setFullName(first.value, last.value);
-          if (!full){
+          if (!full) {
             alert("Iltimos, ism va familiyani kiriting.");
             return;
           }
@@ -404,7 +707,7 @@
 
       // ====== Yakunlash tugmasi ======
       document.getElementById('end').addEventListener('click', () => {
-        // (ixtiyoriy) Ism kiritilmagan bo'lsa to'xtatish:
+        // (xohlasangiz) ism kiritilmasa to'xtatish:
         // const fullNameCheck = getFullName();
         // if (!fullNameCheck) { alert("Iltimos, ism va familiyani kiriting."); return; }
 
@@ -413,7 +716,6 @@
         const percent = Math.round((totalCorrect / totalQuestions) * 100);
         const scoreText = `Natija: ${percent}% / 100%`;
 
-        // F.I.O matnini tayyorlab qo'yamiz
         const fullName = getFullName();
         const nameLine = fullName ? `${fullName} sizning natijangiz` : `Ism-familiya kiritilmagan`;
 
@@ -428,13 +730,14 @@
         }
       });
 
-      // Modal yopish va tashqi zonaga bosilganda yopish
+      // Modal yopish
       function closeModal() {
         document.getElementById('successModal').style.display = 'none';
         document.getElementById('failModal').style.display = 'none';
       }
-      window.closeModal = closeModal; // HTML onclick uchun
+      window.closeModal = closeModal;
 
+      // Tashqi zonaga bosilganda yopish
       document.querySelectorAll('.result-modal').forEach(modal => {
         modal.addEventListener('click', (e) => {
           if (e.target === modal) closeModal();
@@ -443,4 +746,5 @@
     </script>
   </main>
 </body>
+
 </html>
